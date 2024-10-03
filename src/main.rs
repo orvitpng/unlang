@@ -3,7 +3,7 @@ mod lexer;
 use clap::Parser;
 use std::{
     fs::File,
-    io::{stdout, BufReader, IsTerminal, Write},
+    io::{BufReader, IsTerminal, Write, stdout},
     process::exit,
 };
 

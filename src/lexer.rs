@@ -1,7 +1,7 @@
-use std::io::{self, Bytes, Read};
+use std::io::{self, Read};
 
 pub struct Lexer<R: Read> {
-    input: Bytes<R>,
+    input: io::Bytes<R>,
     eof_read: bool,
 }
 impl<R: Read> Lexer<R> {
