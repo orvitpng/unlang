@@ -2,11 +2,9 @@ mod token;
 
 use std::io::{self, Read};
 
-use clap::error;
 use thiserror::Error;
 use token::Token;
 
-// TODO: change this to using Iterator instead of Bytes<Read>
 pub struct Lexer<R: Read> {
     input: std::iter::Peekable<io::Bytes<R>>,
 }
@@ -31,11 +29,29 @@ impl<R: Read> Iterator for Lexer<R> {
         }
 
         Some(Ok(match c {
+            c if c.is_alphabetic() || c == '_' => {
+                let mut ident = String::from(c);
+
+                while let Some(Ok(next_b)) = self.input.peek() {
+                    let next_c = *next_b as char;
+                    if !next_c.is_alphanumeric() && next_c != '_' {
+                        break;
+                    }
+
+                    ident.push(next_c);
+                    self.input.next();
+                }
+
+                Token::parse_keydentifier(ident)
+            },
+            '_' => Token::Identifier(token::Identifier::Discard),
+
             '/' if matches!(self.input.peek(), Some(Ok(b)) if *b as char == '/') =>
             {
                 let mut comment = String::new();
                 self.input.next();
 
+                // hopefully not a problem for error handling
                 while let Some(Ok(b)) = self.input.next() {
                     if b as char == '\n' {
                         break;
@@ -44,7 +60,8 @@ impl<R: Read> Iterator for Lexer<R> {
                 }
 
                 Token::Comment(comment)
-            }
+            },
+
             _ => return Some(Err(LexerError::UnexpectedChar(c))),
         }))
     }

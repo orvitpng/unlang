@@ -21,6 +21,8 @@ impl Token {
 
 #[derive(Debug, PartialEq)]
 pub enum Keyword {
+    Constant, // given
+    Variable, // let
     Function, // fn
 }
 // TODO: consider a real error here
@@ -29,6 +31,8 @@ impl TryFrom<&str> for Keyword {
 
     fn try_from(input: &str) -> Result<Self, Self::Error> {
         match input {
+            "given" => Ok(Keyword::Constant),
+            "let" => Ok(Keyword::Variable),
             "fn" => Ok(Keyword::Function),
             _ => Err(()),
         }
