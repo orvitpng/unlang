@@ -10,10 +10,9 @@ use eyre::{eyre, WrapErr};
 
 pub fn main() -> eyre::Result<()> {
     let args = Args::parse();
-
     let input = File::open(&args.input)
         .wrap_err(format!("failed to open input file {}", args.input))?;
-    // standin for output
+    // stand in for output
     let _: Box<dyn Write> =
         match args.output {
             Some(output_path) => Box::new(File::open(&output_path).wrap_err(

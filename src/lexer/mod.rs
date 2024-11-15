@@ -43,7 +43,7 @@ impl<R: Read> Iterator for Lexer<R> {
                 }
 
                 Token::parse_keydentifier(ident)
-            },
+            }
             '_' => Token::Identifier(token::Identifier::Discard),
 
             '/' if matches!(self.input.peek(), Some(Ok(b)) if *b as char == '/') =>
@@ -60,7 +60,7 @@ impl<R: Read> Iterator for Lexer<R> {
                 }
 
                 Token::Comment(comment)
-            },
+            }
 
             _ => return Some(Err(LexerError::UnexpectedChar(c))),
         }))
