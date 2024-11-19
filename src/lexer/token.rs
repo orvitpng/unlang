@@ -2,7 +2,11 @@
 pub enum Token {
     Keyword(Keyword),
     Identifier(Identifier),
+    
+    Operator(Operator),
+    Delimiter(Delimiter),
 
+    Separator, // ,
     Comment(String), // //
 }
 impl Token {
@@ -43,4 +47,19 @@ impl TryFrom<&str> for Keyword {
 pub enum Identifier {
     Named(String),
     Discard, // _
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Operator {
+    Assignment, // =
+    Type, // :
+    ReturnType, // ->
+}
+
+#[derive(Debug, PartialEq)]
+pub enum Delimiter {
+    OpenParen, // (
+    CloseParen, // )
+    OpenBrace, // {
+    CloseBrace, // }
 }

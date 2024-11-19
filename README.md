@@ -15,9 +15,9 @@ Regarding comments, only single-line comments are supported. These are denoted w
 
 ## 2.2 Values
 
-### Type Inferrence 
+### Type Inferrence
 
-When defining variables or determining the response type of a function, the type will always be inferred. This is because the language should never have enough ambiguity for the compiler to not know what your type is. Therefore, it is impossible to specify a type for a function or variable.
+When defining values, the type will always be inferred. This is because the language should never have enough ambiguity for the compiler to not know what your type is. Therefore, it is impossible to specify a type.
 
 ### Constants
 
@@ -46,7 +46,7 @@ pub fn main() {
 
 Constants should only be used to store data that will not change throughout the program's execution. They provide a way to define fixed values that can be referenced throughout your code.
 
-The choice of the keyword `given` aligns with mathematical notation and reasoning. In mathematics, one would say "given pi is equal to 3.14..." followed by "let x be equal pi squared." This maintains familiar mathematical semantics in the language. Further, alternatives like "const" emphasizes the technical implementation detail of immutaability rather than the logical role of the value as a starting assumption or known quantity.
+The choice of the keyword `given` aligns with mathematical notation and reasoning. In mathematics, one would say "given pi is equal to 3.14..." followed by "let x be equal pi squared." This maintains familiar mathematical semantics in the language. Further, alternatives like "const" emphasizes the technical implementation detail of immutability rather than the logical role of the value as a starting assumption or known quantity.
 
 ### Variables
 
@@ -78,6 +78,52 @@ pub fn main() {
 
 This behavior provides a way to work with values that might need different representations in different parts of your code, while maintaining the safety of immutability. Each new declaration creates a distinct variable, even if it shares a name with one from an outer scope.
 
-### Functions
+## Functions
 
-Idk what to do here yet. This is rough
+The design of functions represents one of the most carefully considered aspects of the language. The goal was to treat functions as first-class citizens with readability and intuitive syntax.
+
+Functions come in three forms, each serving a distinct purpose while maintaining a consistent underlying model. The syntax was chosen to emphasize that all three forms are fundamentally the same thing (a function type), just used in different contexts.
+
+### Type Definition
+
+The most basic form defines a function's type signature:
+
+```unlang
+fn(Int, Int) -> Int
+```
+
+This syntax establishes the fundamental way we think about functions: as types that map from input types to an output type.
+
+### Anonymous Functions
+
+Building on the type definition, anonymous functions add parameter names while maintaining the same basic structure:
+
+```unlang
+fn(a: Int, b: Int) -> Int {
+    a + b
+}
+```
+
+An anonymous function is just a type definition with an implementation. There is no `return` keyword, the last expression is what is returned.
+
+### Named Functions
+
+The final form adds a name to the function:
+
+```unlang
+fn add(a: Int, b: Int) -> Int {
+    a + b
+}
+```
+
+This is syntactic sugar for:
+
+```unlang
+given add = fn(a: Int, b: Int) -> Int {
+    a + b
+}
+```
+
+Early designs of unlang considered using only the `given` syntax for named functions, treating them purely as constants that happen to be functions. However, this approach felt unnatural and made the code less readable.
+
+Note that this syntax is still subject to change as the language evolves. Future versions might introduce additional function-related features or syntax improvements based on practical usage and feedback.

@@ -3,7 +3,7 @@ mod token;
 use std::io::{self, Read};
 
 use thiserror::Error;
-use token::Token;
+use token::{Delimiter, Operator, Token};
 
 pub struct Lexer<R: Read> {
     input: std::iter::Peekable<io::Bytes<R>>,
@@ -46,6 +46,19 @@ impl<R: Read> Iterator for Lexer<R> {
             }
             '_' => Token::Identifier(token::Identifier::Discard),
 
+            '=' => Token::Operator(Operator::Assignment),
+            ':' => Token::Operator(Operator::Type),
+            '-' if matches!(self.input.peek(), Some(Ok(b)) if *b as char == '>') => {
+                self.input.next();
+                Token::Operator(Operator::ReturnType)
+            }
+
+            '(' => Token::Delimiter(Delimiter::OpenParen),
+            ')' => Token::Delimiter(Delimiter::CloseParen),
+            '{' => Token::Delimiter(Delimiter::OpenBrace),
+            '}' => Token::Delimiter(Delimiter::CloseBrace),
+
+            ',' => Token::Separator,
             '/' if matches!(self.input.peek(), Some(Ok(b)) if *b as char == '/') =>
             {
                 let mut comment = String::new();
