@@ -13,7 +13,7 @@ Imports should be organized according to the following rules:
 - Import modules when multiple items from that module are used
 - Never directly import struct-associated functions
 - Group imports from the same module using nested paths (`{}`)
-- Sort imports alphabetically
+- Sort imports alphabetically, lowercase first
 - Place std imports in a separate block above everything else
 
 ### Line Length and Formatting

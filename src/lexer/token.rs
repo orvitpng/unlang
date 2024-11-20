@@ -2,11 +2,11 @@
 pub enum Token {
     Keyword(Keyword),
     Identifier(Identifier),
-    
+
     Operator(Operator),
     Delimiter(Delimiter),
 
-    Separator, // ,
+    Separator,       // ,
     Comment(String), // //
 }
 impl Token {
@@ -52,14 +52,14 @@ pub enum Identifier {
 #[derive(Debug, PartialEq)]
 pub enum Operator {
     Assignment, // =
-    Type, // :
+    Type,       // :
     ReturnType, // ->
 }
 
 #[derive(Debug, PartialEq)]
 pub enum Delimiter {
-    OpenParen, // (
+    OpenParen,  // (
     CloseParen, // )
-    OpenBrace, // {
+    OpenBrace,  // {
     CloseBrace, // }
 }
